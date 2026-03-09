@@ -1,0 +1,1352 @@
+<!DOCTYPE html>
+<html lang="pt-br" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NOVVA | Deep Tech Agriculture</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap"
+        rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        novva: {
+                            green: '#14281d',       // Verde Floresta Profundo (Seriedade)
+                            gold: '#c5a059',        // Dourado Sofisticado (Premium)
+                            sand: '#f4f4f0',        // Off-white (Base clara)
+                            gray: '#888888',
+                            black: '#0a0f0d'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Manrope', 'sans-serif'], // Moderna e Técnica
+                        serif: ['Playfair Display', 'serif'], // Clássica e Elegante
+                    },
+                    backgroundImage: {
+                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* A Alma do Site: Animações e Detalhes */
+        body {
+            background-color: #f4f4f0;
+            color: #14281d;
+            overflow-x: hidden;
+        }
+
+        /* Reveal: Elementos aparecem suavemente ao rolar */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Menu de Vidro (Glassmorphism) */
+        .glass-nav {
+            background: rgba(244, 244, 240, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(20, 40, 29, 0.05);
+        }
+
+        /* Linha Vertical Dourada */
+        .separator {
+            width: 1px;
+            height: 80px;
+            background: linear-gradient(to bottom, transparent, #c5a059, transparent);
+            margin: 0 auto;
+            display: block;
+        }
+
+        /* Efeito de Zoom nas Imagens */
+        .img-zoom-container {
+            overflow: hidden;
+            border-radius: 4px;
+        }
+
+        .img-zoom {
+            transition: transform 1.5s ease;
+        }
+
+        .img-zoom-container:hover .img-zoom {
+            transform: scale(1.05);
+        }
+
+        /* Modal Styles (Imported from Version 1, adapted to V6) */
+        .modal {
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        .modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            transform: translateY(30px) scale(0.95);
+            transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        .modal.active .modal-content {
+            transform: translateY(0) scale(1);
+        }
+
+        /* Custom Scrollbar for Modal content */
+        .scrollbar-hide::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .scrollbar-hide::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .scrollbar-hide::-webkit-scrollbar-thumb {
+            background: rgba(197, 160, 89, 0.3);
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAV -->
+    <nav class="fixed w-full z-50 glass-nav transition-all duration-300 py-5">
+        <div class="max-w-[1400px] mx-auto px-6 md:px-12 flex justify-between items-center">
+            <a href="#"
+                class="flex items-center gap-3 text-2xl font-serif font-bold tracking-tighter text-novva-green group">
+                <!-- Using uploaded logo if desired, or text fallback. Let's use text for cleanness as per V6 design -->
+                NOVVA<span class="text-novva-gold group-hover:text-green-800 transition">.</span>
+            </a>
+
+            <div class="hidden md:flex space-x-12 text-xs font-bold tracking-[0.2em] uppercase text-novva-green/80">
+                <button onclick="document.getElementById('conceito').scrollIntoView({behavior: 'smooth'})"
+                    class="hover:text-novva-gold transition relative group">
+                    Conceito
+                    <span
+                        class="absolute -bottom-2 left-0 w-0 h-0.5 bg-novva-gold transition-all duration-300 group-hover:w-full"></span>
+                </button>
+                <button onclick="document.getElementById('tecnologia').scrollIntoView({behavior: 'smooth'})"
+                    class="hover:text-novva-gold transition relative group">
+                    Tecnologia
+                    <span
+                        class="absolute -bottom-2 left-0 w-0 h-0.5 bg-novva-gold transition-all duration-300 group-hover:w-full"></span>
+                </button>
+                <button onclick="document.getElementById('houses').scrollIntoView({behavior: 'smooth'})"
+                    class="hover:text-novva-gold transition relative group">
+                    Houses
+                    <span
+                        class="absolute -bottom-2 left-0 w-0 h-0.5 bg-novva-gold transition-all duration-300 group-hover:w-full"></span>
+                </button>
+            </div>
+
+            <button onclick="document.getElementById('contato').scrollIntoView({behavior: 'smooth'})"
+                class="bg-novva-green text-white px-8 py-3 rounded-sm text-xs font-bold uppercase tracking-widest hover:bg-green-900 transition duration-300 shadow-lg">
+                Fale Conosco
+            </button>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <header class="relative h-screen flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <!-- New Image: Split Digital Twin -->
+            <img src="assets/split-digital-twin.jpg"
+                onerror="this.src='https://images.unsplash.com/photo-1473968512647-3e447244af8f'"
+                class="w-full h-full object-cover parallax-img">
+            <div class="absolute inset-0 bg-black/30 bg-gradient-to-b from-black/50 via-transparent to-black/50"></div>
+        </div>
+
+        <div class="relative z-10 text-center text-white px-6 reveal active">
+            <div class="inline-block border border-novva-gold/30 px-4 py-1 rounded-full mb-6 backdrop-blur-sm">
+                <p class="text-[10px] font-bold tracking-[0.3em] text-novva-gold uppercase animate-pulse">Deep Tech
+                    Agriculture</p>
+            </div>
+            <h1 class="text-6xl md:text-8xl font-serif font-medium mb-8 leading-tight drop-shadow-lg">
+                A Nova Arte de <br> <span class="italic text-gray-200">Cultivar Inovação</span>
+            </h1>
+
+            <div class="flex flex-col items-center gap-4 mt-12 cursor-pointer"
+                onclick="document.getElementById('conceito').scrollIntoView({behavior: 'smooth'})">
+                <span class="text-[10px] uppercase tracking-widest opacity-80 hover:text-novva-gold transition">Role
+                    para descobrir</span>
+                <div class="w-px h-12 bg-white/30 animate-bounce"></div>
+            </div>
+        </div>
+    </header>
+
+    <!-- CONCEITO SECTION -->
+    <section id="conceito" class="py-32 bg-novva-sand px-6 md:px-12 relative overflow-hidden">
+        <div
+            class="absolute top-0 right-0 text-[20rem] font-serif text-novva-green opacity-[0.03] leading-none pointer-events-none select-none -mr-20 -mt-20">
+            N</div>
+
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-start">
+
+            <div class="reveal md:w-1/2">
+                <!-- Interactive Acronym -->
+                <div class="font-serif text-5xl md:text-7xl leading-tight text-novva-green font-medium space-y-1">
+                    <div class="flex items-center gap-4 group cursor-default">
+                        <span
+                            class="w-10 text-right text-novva-gold text-2xl opacity-50 group-hover:opacity-100 transition duration-500 font-sans -ml-14">N</span>
+                        <span class="group-hover:translate-x-2 transition-transform duration-500">Navegando</span>
+                    </div>
+                    <div class="flex items-center gap-4 group cursor-default">
+                        <span
+                            class="w-10 text-right text-novva-gold text-2xl opacity-50 group-hover:opacity-100 transition duration-500 font-sans -ml-14">O</span>
+                        <span class="group-hover:translate-x-2 transition-transform duration-500">Otimizando</span>
+                    </div>
+                    <div class="flex items-center gap-4 group cursor-default">
+                        <span
+                            class="w-10 text-right text-novva-gold text-2xl opacity-50 group-hover:opacity-100 transition duration-500 font-sans -ml-14">V</span>
+                        <span class="group-hover:translate-x-2 transition-transform duration-500">Versátil</span>
+                    </div>
+                    <div class="flex items-center gap-4 group cursor-default">
+                        <span
+                            class="w-10 text-right text-novva-gold text-2xl opacity-50 group-hover:opacity-100 transition duration-500 font-sans -ml-14">V</span>
+                        <span class="group-hover:translate-x-2 transition-transform duration-500">Visionária</span>
+                    </div>
+                    <div class="flex items-center gap-4 group cursor-default">
+                        <span
+                            class="w-10 text-right text-novva-gold text-2xl opacity-50 group-hover:opacity-100 transition duration-500 font-sans -ml-14">A</span>
+                        <span class="group-hover:translate-x-2 transition-transform duration-500">Agricultura</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-16 md:mt-0 reveal delay-200 md:w-1/3 flex flex-col justify-center h-full">
+                <div class="w-12 h-[2px] bg-novva-gold mb-6"></div>
+                <p class="text-xs font-bold uppercase tracking-widest text-novva-green mb-4">
+                    Exclusivamente para quem cultiva o amanhã.
+                </p>
+                <p class="text-gray-600 font-light leading-relaxed mb-6">
+                    A agricultura não é apenas plantar e colher. É uma ciência complexa que exige precisão. Atuamos de
+                    forma exclusiva, integrando conhecimento genético, dados de campo e tecnologia espacial.
+                </p>
+                <button onclick="openModal('modal-manifesto')"
+                    class="text-left text-novva-gold text-xs uppercase font-bold tracking-widest hover:text-novva-green transition flex items-center gap-2 group">
+                    Ler Manifesto Completo
+                    <span class="group-hover:translate-x-1 transition-transform">&rarr;</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- MANIFESTO/VISION SECTION -->
+    <section class="py-24 bg-white px-6 md:px-12">
+        <div class="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-20 items-center">
+
+            <div class="reveal order-2 md:order-1">
+                <h2 class="text-4xl md:text-5xl font-serif text-novva-green mb-8 leading-tight">
+                    Inovando hoje, <br> marcando gerações.
+                </h2>
+                <div class="text-gray-600 font-light leading-relaxed space-y-6 text-lg">
+                    <p>
+                        Na NOVVA, unimos tecnologia e sensibilidade para apoiar quem vive da terra com visão e coragem.
+                        Criamos soluções que facilitam o presente sem esquecer o futuro.
+                    </p>
+                    <p>
+                        Estamos ao lado de cada produtor, conectados em tempo real à sua safra. Atuamos de forma
+                        exclusiva, priorizando necessidades específicas com soluções únicas.
+                    </p>
+                </div>
+            </div>
+
+            <div
+                class="img-zoom-container rounded shadow-2xl reveal delay-200 h-[600px] order-1 md:order-2 relative group">
+                <!-- New Image: Handshake -->
+                <img src="assets/handshake.jpg"
+                    onerror="this.src='https://images.unsplash.com/photo-1625246333195-58f216f4258d'"
+                    class="img-zoom w-full h-full object-cover">
+                <div
+                    class="absolute bottom-0 left-0 bg-white p-8 m-8 max-w-xs shadow-lg hidden md:block border-l-2 border-novva-gold">
+                    <p class="font-serif text-2xl text-novva-green italic">"Parceria real."</p>
+                    <p class="text-[10px] uppercase tracking-widest text-gray-400 mt-2">Conexão Humana & Tech</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- CHALLENGES SECTION -->
+    <section class="py-24 bg-novva-green text-novva-sand px-6 md:px-12 relative overflow-hidden">
+        <!-- Background DNA Abstract decoration -->
+        <div
+            class="absolute top-0 left-0 w-full h-full opacity-5 pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] mix-blend-overlay">
+        </div>
+
+        <div class="max-w-7xl mx-auto relative z-10">
+            <div class="mb-16 reveal flex flex-col md:flex-row justify-between items-end">
+                <div>
+                    <h2 class="text-3xl md:text-5xl font-serif mb-4">Os desafios que moldam<br>cada safra</h2>
+                </div>
+                <div class="mt-6 md:mt-0 max-w-sm text-right">
+                    <p class="text-novva-gold font-light border-r border-novva-gold pr-6">
+                        Compreender a dor é o primeiro passo para a solução definitiva.
+                    </p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-px bg-novva-gold/20 border border-novva-gold/20 reveal">
+                <!-- Challenge 1 -->
+                <div onclick="openModal('modal-desafios')"
+                    class="bg-novva-green p-12 hover:bg-[#0f1f16] transition duration-500 group cursor-pointer relative overflow-hidden">
+                    <div
+                        class="absolute top-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition text-novva-gold text-xs uppercase tracking-widest">
+                        + Detalhes</div>
+                    <span
+                        class="text-novva-gold text-4xl font-serif italic block mb-6 opacity-50 group-hover:opacity-100 transition">01</span>
+                    <h3 class="text-xl font-bold uppercase tracking-widest mb-4 text-white">Clima Imprevisível</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Secas prolongadas e eventos extremos. Antecipamos esses cenários com modelos inteligentes.
+                    </p>
+                </div>
+                <!-- Challenge 2 -->
+                <div onclick="openModal('modal-desafios')"
+                    class="bg-novva-green p-12 hover:bg-[#0f1f16] transition duration-500 group cursor-pointer relative overflow-hidden">
+                    <div
+                        class="absolute top-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition text-novva-gold text-xs uppercase tracking-widest">
+                        + Detalhes</div>
+                    <span
+                        class="text-novva-gold text-4xl font-serif italic block mb-6 opacity-50 group-hover:opacity-100 transition">02</span>
+                    <h3 class="text-xl font-bold uppercase tracking-widest mb-4 text-white">Solo Complexo</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Variações invisíveis a olho nu. Identificamos particularidades para orientar decisões precisas.
+                    </p>
+                </div>
+                <!-- Challenge 3 -->
+                <div onclick="openModal('modal-desafios')"
+                    class="bg-novva-green p-12 hover:bg-[#0f1f16] transition duration-500 group cursor-pointer relative overflow-hidden">
+                    <div
+                        class="absolute top-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition text-novva-gold text-xs uppercase tracking-widest">
+                        + Detalhes</div>
+                    <span
+                        class="text-novva-gold text-4xl font-serif italic block mb-6 opacity-50 group-hover:opacity-100 transition">03</span>
+                    <h3 class="text-xl font-bold uppercase tracking-widest mb-4 text-white">Custos em Alta</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Com inteligência integrada, ajudamos a reduzir desperdícios e proteger margens.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SEPARATOR SECTION -->
+    <section class="py-32 bg-novva-sand text-center px-6">
+        <div class="reveal max-w-4xl mx-auto">
+            <span class="block separator mb-8"></span>
+            <h2 class="text-4xl md:text-6xl font-serif text-novva-green mb-8">Decisão antes do impacto.</h2>
+            <div
+                class="flex flex-col md:flex-row justify-center gap-4 md:gap-12 text-xs font-bold uppercase tracking-widest text-gray-500 h-full items-center">
+                <span class="flex items-center gap-2"><span
+                        class="w-1.5 h-1.5 bg-novva-gold rounded-full"></span>Antecipação</span>
+                <span class="hidden md:inline text-gray-300 h-4 border-r border-gray-300"></span>
+                <span class="flex items-center gap-2"><span
+                        class="w-1.5 h-1.5 bg-novva-gold rounded-full"></span>Monitoramento Contínuo</span>
+                <span class="hidden md:inline text-gray-300 h-4 border-r border-gray-300"></span>
+                <span class="flex items-center gap-2"><span
+                        class="w-1.5 h-1.5 bg-novva-gold rounded-full"></span>Atuação Personalizada</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- TECHNOLOGY SECTION -->
+    <section id="tecnologia" class="bg-white">
+
+        <!-- Module 1 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 min-h-[600px] border-b border-gray-100">
+            <div class="img-zoom-container relative h-full min-h-[400px]">
+                <!-- New Image: Drone Field -->
+                <img src="assets/drone-field.jpg"
+                    onerror="this.src='https://images.unsplash.com/photo-1532187863486-abf9dbad1b69'"
+                    class="img-zoom w-full h-full object-cover">
+            </div>
+            <div class="flex items-center p-12 md:p-24 reveal bg-white">
+                <div>
+                    <span class="text-xs text-novva-gold uppercase tracking-widest font-bold mb-2 block">Módulo
+                        01</span>
+                    <h3 class="text-3xl font-serif text-novva-green mb-6">Imersão de Precisão Absoluta</h3>
+                    <p class="text-gray-600 leading-relaxed mb-8 text-lg font-light">
+                        Não apenas analisamos dados; compreendemos a essência da sua safra. Realizamos um estudo
+                        profundo e exclusivo de cada microrregião, garantindo um diagnóstico único que serve de alicerce
+                        para resultados superiores.
+                    </p>
+                    <ul class="text-sm text-gray-500 space-y-3 font-medium">
+                        <li class="flex items-center gap-2"><svg class="w-4 h-4 text-novva-gold" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg> Análise Genômica do Solo</li>
+                        <li class="flex items-center gap-2"><svg class="w-4 h-4 text-novva-gold" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg> Nutrição de Precisão</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Module 2 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 min-h-[600px] border-b border-gray-100">
+            <div class="flex items-center p-12 md:p-24 order-2 md:order-1 reveal bg-novva-sand/30">
+                <div>
+                    <span class="text-xs text-novva-gold uppercase tracking-widest font-bold mb-2 block">Módulo
+                        02</span>
+                    <h3 class="text-3xl font-serif text-novva-green mb-6">Fazenda Digital em Nuvem</h3>
+                    <p class="text-gray-600 leading-relaxed mb-8 text-lg font-light">
+                        Reproduzimos sua operação em um ambiente virtual seguro (Digital Twin). Dados são organizados e
+                        interpretados para testar cenários antes de você ir a campo.
+                    </p>
+                    <ul class="text-sm text-gray-500 space-y-3 font-medium">
+                        <li class="flex items-center gap-2"><svg class="w-4 h-4 text-novva-gold" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg> Simulação de Cenários</li>
+                        <li class="flex items-center gap-2"><svg class="w-4 h-4 text-novva-gold" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg> Previsão de Colheita</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="img-zoom-container relative h-full min-h-[400px] order-1 md:order-2">
+                <!-- Using Hero image again or another techy one -->
+                <img src="assets/dashboard-tablet.png"
+                    onerror="this.src='https://images.unsplash.com/photo-1611689225726-26214197c36a'"
+                    class="img-zoom w-full h-full object-cover">
+            </div>
+        </div>
+
+        <!-- Module 3 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 min-h-[600px]">
+            <div class="img-zoom-container relative h-full min-h-[400px]">
+                <img src="image_24dcc2.jpg"
+                    onerror="this.src='https://images.unsplash.com/photo-1551288049-bebda4e38f71'"
+                    class="img-zoom w-full h-full object-cover">
+            </div>
+            <div class="flex items-center p-12 md:p-24 reveal bg-white">
+                <div>
+                    <span class="text-xs text-novva-gold uppercase tracking-widest font-bold mb-2 block">Módulo
+                        03</span>
+                    <h3 class="text-3xl font-serif text-novva-green mb-6">Inteligência & Conexão Direta</h3>
+                    <p class="text-gray-600 leading-relaxed mb-8 text-lg font-light">
+                        Muito além de um painel: um ecossistema vivo. Informações organizadas de forma inteligente para
+                        sua decisão, com um canal de comunicação aberto a todo tempo. Aprofunde-se em detalhes ou
+                        esclareça dúvidas instantaneamente com nossa equipe.
+                    </p>
+                    <ul class="text-sm text-gray-500 space-y-3 font-medium">
+                        <li class="flex items-center gap-2"><svg class="w-4 h-4 text-novva-gold" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg> Central de Comando Unificada</li>
+                        <li class="flex items-center gap-2"><svg class="w-4 h-4 text-novva-gold" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg> Acesso Remoto Seguro</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- HOUSES SECTION -->
+    <section id="houses" class="py-32 bg-novva-sand px-6 md:px-12">
+        <div class="max-w-[1400px] mx-auto">
+            <div class="text-center mb-20 reveal">
+                <h2 class="text-4xl md:text-5xl font-serif text-novva-green mb-4">Escolha sua operação perfeita</h2>
+                <p class="text-gray-500">Tecnologia sob medida — do monitoramento básico à inteligência total.</p>
+            </div>
+
+            <!-- Intro Box -->
+            <div
+                class="bg-novva-green/5 p-8 rounded border border-novva-green/5 mb-12 text-center max-w-3xl mx-auto reveal">
+                <p class="text-sm text-novva-green leading-relaxed">
+                    <strong>A Base de Tudo:</strong> Fique tranquilo. Toda a complexidade tecnológica e manutenção é de
+                    <strong>nossa total responsabilidade</strong>. Nossos sistemas operam de forma autônoma, garantindo
+                    que você usufrua dos resultados sem se preocupar com a operação.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 reveal">
+
+                <!-- Starter -->
+                <div
+                    class="group p-10 border border-gray-200 hover:border-novva-green hover:shadow-xl transition duration-500 rounded bg-white flex flex-col relative overflow-hidden">
+                    <span class="text-xs font-bold text-gray-400 uppercase tracking-widest z-10">Entrada</span>
+                    <h3 class="text-3xl font-serif text-novva-green mt-4 mb-6 z-10">Starter</h3>
+                    <p class="text-sm text-gray-600 leading-relaxed mb-8 flex-grow z-10">
+                        Ideal para iniciar a jornada. Monitoramento claro do solo e clima, com alertas em tempo real que
+                        viabilizam decisões rápidas.
+                    </p>
+                    <div class="border-t border-gray-100 pt-6 mt-auto z-10">
+                        <button onclick="openModal('modal-starter')"
+                            class="w-full block text-center py-3 border border-gray-300 text-xs uppercase font-bold tracking-widest hover:bg-novva-green hover:text-white transition">Detalhes</button>
+                    </div>
+                </div>
+
+                <!-- Edge (Recommended) -->
+                <div
+                    class="group p-10 bg-novva-green text-white rounded shadow-2xl relative transform md:-translate-y-6 flex flex-col border border-novva-gold/20">
+                    <div
+                        class="absolute top-0 right-0 bg-novva-gold text-novva-green text-[10px] font-bold px-4 py-1 uppercase tracking-widest">
+                        Recomendado</div>
+                    <span class="text-xs font-bold text-novva-gold uppercase tracking-widest">Intermediário</span>
+                    <h3 class="text-4xl font-serif mt-4 mb-6 italic text-grad">Edge</h3>
+                    <p class="text-gray-300 text-sm leading-relaxed mb-8 flex-grow">
+                        Amplia a capacidade com <strong>automação avançada</strong>. Drones autônomos e processamento
+                        local para aumentar eficiência e reduzir custos.
+                    </p>
+                    <div class="border-t border-white/10 pt-6 mt-auto">
+                        <button onclick="openModal('modal-edge')"
+                            class="w-full block text-center py-3 bg-white text-novva-green text-xs uppercase font-bold tracking-widest hover:bg-novva-gold transition">Descobrir
+                            Edge</button>
+                    </div>
+                </div>
+
+                <!-- DNAi-Edge -->
+                <div
+                    class="group p-10 border border-gray-200 hover:border-purple-900 hover:shadow-xl transition duration-500 rounded bg-white flex flex-col relative overflow-hidden">
+                    <div
+                        class="absolute top-0 left-0 w-1 h-full bg-purple-900 opacity-0 group-hover:opacity-100 transition">
+                    </div>
+                    <span class="text-xs font-bold text-purple-800 uppercase tracking-widest">Avançado</span>
+                    <h3 class="text-3xl font-serif text-novva-green mt-4 mb-6">DNAi-Edge</h3>
+                    <p class="text-sm text-gray-600 leading-relaxed mb-8 flex-grow">
+                        O nível máximo. Integra análises moleculares profundas e tecnologias exclusivas para
+                        recomendações que elevam produtividade.
+                    </p>
+                    <div class="border-t border-gray-100 pt-6 mt-auto">
+                        <button onclick="openModal('modal-dnai')"
+                            class="w-full block text-center py-3 border border-gray-300 text-xs uppercase font-bold tracking-widest hover:bg-purple-900 hover:text-white transition">Detalhes</button>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="text-center mt-12 text-xs text-gray-400 italic">
+                * Todas as operações incluem suporte especializado NOVVA e monitoramento ativo.
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT CTA -->
+    <section id="contato" class="py-32 relative flex items-center justify-center overflow-hidden bg-novva-green">
+        <div class="absolute inset-0 opacity-20">
+            <img src="assets/handshake.jpg"
+                onerror="this.src='https://images.unsplash.com/photo-1628136894042-421712aecaf8'"
+                class="w-full h-full object-cover grayscale">
+        </div>
+
+        <div class="relative z-10 text-center max-w-3xl px-6 reveal">
+            <h2 class="text-4xl md:text-6xl font-serif text-white mb-8">Pronto para cultivar inovação?</h2>
+            <p class="text-lg text-gray-300 mb-12 font-light">
+                Transforme a visão da sua safra em resultados concretos.
+            </p>
+
+            <a href="https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAANAAcjrueFUOFU3UjFOUVdMOUJWMTdWOUNaVjhWQzlQWC4u"
+                target="_blank"
+                class="inline-block bg-white text-novva-green px-12 py-5 rounded-sm text-xs uppercase tracking-[0.25em] font-bold hover:bg-novva-gold hover:text-white transition duration-500 shadow-2xl hover:scale-105 transform">
+                Falar com Especialista
+            </a>
+
+            <p class="mt-8 text-white/50 text-xs uppercase tracking-widest">
+                Consulta gratuita e 100% confidencial
+            </p>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-novva-green text-gray-400 py-20 px-6 md:px-12 text-sm border-t border-white/5">
+        <div class="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+            <div class="col-span-1 md:col-span-1">
+                <div class="text-3xl font-serif font-bold text-white mb-6">NOVVA<span class="text-novva-gold">.</span>
+                </div>
+                <p class="max-w-md leading-relaxed text-gray-400">
+                    Cultivar inovação responsável que fortaleça produtores, valoriza o solo e constrói um futuro
+                    sustentável para o campo.
+                </p>
+            </div>
+
+            <div>
+                <h4 class="text-white font-bold uppercase text-xs tracking-widest mb-6">Navegação</h4>
+                <ul class="space-y-4">
+                    <li><button onclick="openModal('modal-manifesto')"
+                            class="hover:text-novva-gold transition">Manifesto</button></li>
+                    <li><a href="#tecnologia" class="hover:text-novva-gold transition">Tecnologia</a></li>
+                    <li><a href="#houses" class="hover:text-novva-gold transition">Houses</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="text-white font-bold uppercase text-xs tracking-widest mb-6">Contato</h4>
+                <ul class="space-y-4">
+                    <li><a href="https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAANAAcjrueFUOFU3UjFOUVdMOUJWMTdWOUNaVjhWQzlQWC4u"
+                            class="hover:text-novva-gold transition">Falar com
+                            Consultor</a></li>
+                    <li><a href="#" class="hover:text-novva-gold transition"></a></li>
+                    <li><a href="#" class="hover:text-novva-gold transition">Suporte</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="text-white font-bold uppercase text-xs tracking-widest mb-6">Legal & Compliance</h4>
+                <ul class="space-y-4">
+                    <li><button onclick="openModal('modal-termos')" class="hover:text-novva-gold transition">Termos de
+                            Uso</button></li>
+                    <li><button onclick="openModal('modal-privacidade')"
+                            class="hover:text-novva-gold transition">Política de Privacidade</button></li>
+                </ul>
+            </div>
+        </div>
+
+        <div
+            class="max-w-[1400px] mx-auto pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center text-xs text-gray-500">
+            <p>&copy; 2035 NOVVA Agriculture. Todos os direitos reservados.</p>
+            <p>Powered by Innovation.</p>
+        </div>
+    </footer>
+
+    <!-- MODALS (The "Depth" from Version 1, Styled in V6) -->
+
+    <!-- Modal Privacidade -->
+    <div id="modal-privacidade"
+        class="modal fixed inset-0 z-[60] flex items-center justify-center px-4 bg-novva-black/90 backdrop-blur-md">
+        <div
+            class="modal-content bg-[#14281d] w-full max-w-2xl p-10 rounded border border-novva-gold/20 relative text-gray-300 shadow-2xl">
+            <h3 class="text-2xl font-serif text-white mb-8 border-b border-white/10 pb-4">Política de Privacidade &
+                Dados</h3>
+
+            <div class="space-y-8 font-sans">
+                <!-- Pillar 1 -->
+                <div>
+                    <h4 class="text-novva-green font-bold text-lg mb-2" style="color: #1a4d2e; filter: brightness(2);">
+                        01. Uso de Dados para Performance</h4>
+                    <p class="text-sm leading-relaxed text-gray-400">
+                        As informações coletadas (como tamanho da safra, localização e cultura) são processadas
+                        internamente e exclusivamente para gerar pré-diagnósticos e calibrar a inteligência artificial
+                        da NOVVA antes mesmo do primeiro contato. Não vendemos dados.
+                    </p>
+                </div>
+                <!-- Pillar 2 -->
+                <div>
+                    <h4 class="text-novva-green font-bold text-lg mb-2" style="color: #1a4d2e; filter: brightness(2);">
+                        02. Comunicação Exclusiva</h4>
+                    <p class="text-sm leading-relaxed text-gray-400">
+                        Seus dados de contato (e-mail/telefone) são estritamente para o relacionamento direto entre um
+                        Especialista NOVVA e você. Nada de listas de spam, parceiros terceiros ou publicidade
+                        indesejada.
+                    </p>
+                </div>
+                <!-- Pillar 3 -->
+                <div>
+                    <h4 class="text-novva-green font-bold text-lg mb-2" style="color: #1a4d2e; filter: brightness(2);">
+                        03. Segurança e Retenção</h4>
+                    <p class="text-sm leading-relaxed text-gray-400">
+                        Utilizamos criptografia de ponta a ponta para armazenar suas informações. Você detém a
+                        titularidade dos seus dados e pode solicitar a exclusão completa de nossos registros a qualquer
+                        momento.
+                    </p>
+                </div>
+            </div>
+
+            <div class="mt-8 pt-6 border-t border-white/10 flex justify-end">
+                <button onclick="closeModal('modal-privacidade')"
+                    class="bg-white text-novva-green px-8 py-2 rounded-sm text-xs font-bold uppercase tracking-widest hover:bg-novva-gold hover:text-white transition">
+                    Compreendi
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Manifesto -->
+    <div id="modal-manifesto"
+        class="modal fixed inset-0 z-[60] flex items-center justify-center px-4 bg-novva-black/90 backdrop-blur-md">
+        <div
+            class="modal-content bg-[#14281d] w-full max-w-2xl p-10 rounded border border-novva-gold/20 relative text-gray-300 shadow-2xl">
+            <button onclick="closeModal('modal-manifesto')"
+                class="absolute top-4 right-4 text-novva-gold hover:text-white text-xl transition">&times;</button>
+            <h3 class="text-3xl font-serif text-white mb-6">Inovando hoje. Marcando gerações.</h3>
+            <div
+                class="overflow-y-auto max-h-[60vh] pr-4 scrollbar-hide space-y-4 leading-relaxed font-light text-sm md:text-base">
+                <p>
+                    Na NOVVA, unimos tecnologia e sensibilidade para apoiar quem vive da terra com visão e coragem.
+                    Criamos soluções que facilitam o presente sem esquecer o futuro — ajudando produtores a decidir com
+                    clareza, cultivar com inteligência e colher com orgulho o que será lembrado.
+                </p>
+                <p>
+                    Estamos ao lado de cada produtor, conectados em tempo real à sua safra. Atuamos de forma exclusiva,
+                    priorizando necessidades específicas com soluções únicas que compreendem profundamente cada
+                    realidade.
+                </p>
+                <p>
+                    Acreditamos que cada safra carrega uma história — e que inovação de verdade é aquela que respeita o
+                    tempo da terra enquanto constrói o futuro.
+                </p>
+                <p class="text-novva-gold italic pt-4">"Conceito NOVVA"</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Desafios -->
+    <div id="modal-desafios"
+        class="modal fixed inset-0 z-[60] flex items-center justify-center px-4 bg-novva-black/90 backdrop-blur-md">
+        <div
+            class="modal-content bg-[#14281d] w-full max-w-3xl p-10 rounded border border-novva-gold/20 relative text-gray-300 overflow-hidden shadow-2xl">
+            <button onclick="closeModal('modal-desafios')"
+                class="absolute top-4 right-4 text-novva-gold hover:text-white text-xl transition">&times;</button>
+            <h3 class="text-3xl font-serif text-white mb-8 border-b border-white/10 pb-4">Desafios da Agricultura
+                Moderna</h3>
+
+            <div class="overflow-y-auto max-h-[60vh] pr-4 scrollbar-hide space-y-8">
+                <div>
+                    <h4 class="text-lg text-novva-gold font-bold mb-2 uppercase tracking-widest text-xs">01. Clima
+                        Imprevisível</h4>
+                    <p class="text-sm leading-relaxed text-gray-400">
+                        Mudanças climáticas intensas deixaram de ser exceção. Secas prolongadas, chuvas irregulares e
+                        eventos extremos. Na NOVVA, antecipamos esses cenários com monitoramento contínuo e modelos
+                        inteligentes que permitem previsibilidade.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="text-lg text-novva-gold font-bold mb-2 uppercase tracking-widest text-xs">02. Solo
+                        Complexo</h4>
+                    <p class="text-sm leading-relaxed text-gray-400">
+                        Cada hectare possui particularidades invisíveis a olho nu. Variações sutis no solo, somadas às
+                        mudanças climáticas constantes. Nossa abordagem identifica essas diferenças e orienta decisões
+                        precisas, "pixel a pixel".
+                    </p>
+                </div>
+                <div>
+                    <h4 class="text-lg text-novva-gold font-bold mb-2 uppercase tracking-widest text-xs">03. Custos em
+                        Alta</h4>
+                    <p class="text-sm leading-relaxed text-gray-400">
+                        A volatilidade nos preços de insumos, energia e logística pressiona a rentabilidade. Com apoio
+                        de inteligência e análise integrada, ajudamos a reduzir desperdícios e proteger margens.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- House 1: Starter -->
+    <div id="modal-starter"
+        class="modal fixed inset-0 z-[60] flex items-center justify-center px-4 bg-novva-black/90 backdrop-blur-md">
+        <div
+            class="modal-content bg-white w-full max-w-4xl rounded overflow-hidden shadow-2xl relative flex flex-col md:flex-row h-[80vh] md:h-[600px]">
+            <button onclick="closeModal('modal-starter')"
+                class="absolute top-4 right-4 z-20 text-white md:text-gray-500 hover:text-novva-green text-3xl transition">&times;</button>
+
+            <!-- Side Image -->
+            <div class="w-full md:w-1/3 bg-gray-200 relative h-48 md:h-auto">
+                <img src="assets/sensor-close.jpg"
+                    onerror="this.src='https://images.unsplash.com/photo-1581090122319-898f8107531e'"
+                    class="w-full h-full object-cover">
+                <div class="absolute bottom-0 left-0 p-6 bg-gradient-to-t from-black/80 to-transparent w-full">
+                    <h3 class="text-white text-2xl font-serif">Starter</h3>
+                    <p class="text-novva-gold text-xs uppercase tracking-widest">O Primeiro Passo</p>
+                </div>
+            </div>
+
+            <!-- Content -->
+            <div class="w-full md:w-2/3 p-8 md:p-12 flex flex-col bg-white">
+                <!-- Tabs Nav -->
+                <div class="flex border-b border-gray-100 mb-8">
+                    <button
+                        class="tab-btn active text-xs font-bold uppercase tracking-widest pb-4 border-b-2 border-novva-green text-novva-green mr-8 transition"
+                        onclick="switchTab(event, 'starter-scope')">O Que Está Incluso</button>
+                    <button
+                        class="tab-btn text-xs font-bold uppercase tracking-widest pb-4 border-b-2 border-transparent text-gray-400 hover:text-novva-green mr-8 transition"
+                        onclick="switchTab(event, 'starter-tech')">Ficha Técnica</button>
+                    <button
+                        class="tab-btn text-xs font-bold uppercase tracking-widest pb-4 border-b-2 border-transparent text-gray-400 hover:text-novva-green transition"
+                        onclick="switchTab(event, 'starter-roi')">O Diferencial</button>
+                </div>
+
+                <!-- Tab Panes -->
+                <div class="flex-grow overflow-y-auto pr-2 scrollbar-hide">
+
+                    <!-- Scope -->
+                    <div id="starter-scope" class="tab-pane">
+                        <ul class="space-y-6">
+                            <li class="flex items-start gap-4">
+                                <div class="bg-novva-sand p-2 rounded-full"><svg class="w-5 h-5 text-novva-green"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg></div>
+                                <div>
+                                    <h4 class="font-bold text-novva-green">Sensores de Solo</h4>
+                                    <p class="text-sm text-gray-500">Monitoramento preciso de umidade e temperatura
+                                        base.</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-4">
+                                <div class="bg-novva-sand p-2 rounded-full"><svg class="w-5 h-5 text-novva-green"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
+                                    </svg></div>
+                                <div>
+                                    <h4 class="font-bold text-novva-green">Estação Climática Própria</h4>
+                                    <p class="text-sm text-gray-500">Previsão cruzada com dados locais para ação
+                                        preventiva.</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-4">
+                                <div class="bg-novva-sand p-2 rounded-full"><svg class="w-5 h-5 text-novva-green"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                                    </svg></div>
+                                <div>
+                                    <h4 class="font-bold text-novva-green">Novva App & Inteligência</h4>
+                                    <p class="text-sm text-gray-500">Alertas em tempo real e insights estratégicos na
+                                        palma da mão.</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-4">
+                                <div class="bg-novva-sand p-2 rounded-full"><svg class="w-5 h-5 text-novva-green"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+                                    </svg></div>
+                                <div>
+                                    <h4 class="font-bold text-novva-green">Multisensoriamento Inteligente</h4>
+                                    <p class="text-sm text-gray-500">Tecnologia exclusiva de coleta de dados ambientais.
+                                    </p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Tech -->
+                    <div id="starter-tech" class="tab-pane hidden">
+                        <div class="space-y-6">
+                            <div>
+                                <h4 class="text-xs uppercase text-gray-400 font-bold mb-1">Conectividade</h4>
+                                <p class="text-novva-green font-serif text-lg">Alta Conectividade Autônoma</p>
+                            </div>
+                            <div>
+                                <h4 class="text-xs uppercase text-gray-400 font-bold mb-1">Autonomia</h4>
+                                <p class="text-novva-green font-serif text-lg">Autonomia Total (Manutenção 100% Inclusa)
+                                </p>
+                            </div>
+                            <div>
+                                <h4 class="text-xs uppercase text-gray-400 font-bold mb-1">Precisão</h4>
+                                <p class="text-novva-green font-serif text-lg">Decisões baseadas em Múltiplos Dados
+                                    Integrados</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ROI -->
+                    <div id="starter-roi" class="tab-pane hidden">
+                        <div class="bg-novva-sand/50 p-6 rounded border border-novva-gold/20">
+                            <h4 class="text-novva-green font-bold text-lg mb-2">Exclusividade Real</h4>
+                            <p class="text-sm text-gray-600 leading-relaxed italic">
+                                "Tenha a segurança de quem sabe exatamente o que o ambiente reserva. Reduza riscos
+                                invisíveis e maximize cada gota de investimento com uma clareza que só a NOVVA
+                                proporciona."
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- CTA -->
+                <div class="mt-8 pt-6 border-t border-gray-100">
+                    <a href="https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAANAAcjrueFUOFU3UjFOUVdMOUJWMTdWOUNaVjhWQzlQWC4u"
+                        target="_blank"
+                        class="block w-full text-center bg-novva-green text-white py-4 rounded-sm text-xs uppercase font-bold tracking-[0.2em] hover:bg-green-900 transition shadow-lg">
+                        Solicitar Starter House
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- House 2: Edge -->
+    <div id="modal-edge"
+        class="modal fixed inset-0 z-[60] flex items-center justify-center px-4 bg-novva-black/90 backdrop-blur-md">
+        <div
+            class="modal-content bg-white w-full max-w-4xl rounded overflow-hidden shadow-2xl relative flex flex-col md:flex-row h-[80vh] md:h-[600px]">
+            <button onclick="closeModal('modal-edge')"
+                class="absolute top-4 right-4 z-20 text-white md:text-gray-500 hover:text-novva-green text-3xl transition">&times;</button>
+
+            <!-- Side Image -->
+            <div class="w-full md:w-1/3 bg-gray-200 relative h-48 md:h-auto">
+                <img src="assets/drone-tech.jpg"
+                    onerror="this.src='https://images.unsplash.com/photo-1579829366248-204fe8413f31'"
+                    class="w-full h-full object-cover grayscale mix-blend-multiply bg-novva-green">
+                <div class="absolute bottom-0 left-0 p-6 bg-gradient-to-t from-black/80 to-transparent w-full">
+                    <h3 class="text-white text-2xl font-serif">Edge</h3>
+                    <p class="text-novva-gold text-xs uppercase tracking-widest">Automação Completa</p>
+                </div>
+            </div>
+
+            <!-- Content -->
+            <div class="w-full md:w-2/3 p-8 md:p-12 flex flex-col bg-white">
+                <!-- Tabs Nav -->
+                <div class="flex border-b border-gray-100 mb-8">
+                    <button
+                        class="tab-btn active text-xs font-bold uppercase tracking-widest pb-4 border-b-2 border-novva-green text-novva-green mr-8 transition"
+                        onclick="switchTab(event, 'edge-scope')">O Que Está Incluso</button>
+                    <button
+                        class="tab-btn text-xs font-bold uppercase tracking-widest pb-4 border-b-2 border-transparent text-gray-400 hover:text-novva-green mr-8 transition"
+                        onclick="switchTab(event, 'edge-tech')">Ficha Técnica</button>
+                    <button
+                        class="tab-btn text-xs font-bold uppercase tracking-widest pb-4 border-b-2 border-transparent text-gray-400 hover:text-novva-green transition"
+                        onclick="switchTab(event, 'edge-roi')">O Diferencial</button>
+                </div>
+
+                <!-- Tab Panes -->
+                <div class="flex-grow overflow-y-auto pr-2 scrollbar-hide">
+                    <!-- Scope -->
+                    <div id="edge-scope" class="tab-pane">
+                        <ul class="space-y-6">
+                            <li class="flex items-start gap-4">
+                                <div class="bg-novva-sand p-2 rounded-full"><svg class="w-5 h-5 text-novva-green"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5" />
+                                    </svg></div>
+                                <div>
+                                    <h4 class="font-bold text-novva-green">Drones Autônomos (UAVs)</h4>
+                                    <p class="text-sm text-gray-500">Frota com hangar de carregamento automático para
+                                        rondas 24/7 sem intervenção humana.</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-4">
+                                <div class="bg-novva-sand p-2 rounded-full"><svg class="w-5 h-5 text-novva-green"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
+                                    </svg></div>
+                                <div>
+                                    <h4 class="font-bold text-novva-green">Processador Edge AI Local</h4>
+                                    <p class="text-sm text-gray-500">Inteligência Artificial embarcada que processa e
+                                        decide no próprio campo.</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-4">
+                                <div class="bg-novva-sand p-2 rounded-full"><svg class="w-5 h-5 text-novva-green"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                    </svg></div>
+                                <div>
+                                    <h4 class="font-bold text-novva-green">Central de Comando Pro</h4>
+                                    <p class="text-sm text-gray-500">Controle total da operação e relatórios executivos
+                                        sem esforço.
+                                    </p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- Tech -->
+                    <div id="edge-tech" class="tab-pane hidden">
+                        <div class="space-y-6">
+                            <div>
+                                <h4 class="text-xs uppercase text-gray-400 font-bold mb-1">Nível de Autonomia</h4>
+                                <p class="text-novva-green font-serif text-lg">Total - Zero Preocupação</p>
+                            </div>
+                            <div>
+                                <h4 class="text-xs uppercase text-gray-400 font-bold mb-1">Visão Computacional</h4>
+                                <p class="text-novva-green font-serif text-lg">Espectro Completo (Além do Visível)</p>
+                            </div>
+                            <div>
+                                <h4 class="text-xs uppercase text-gray-400 font-bold mb-1">Performance</h4>
+                                <p class="text-novva-green font-serif text-lg">Decisão e Atuação em Tempo Real</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- ROI -->
+                    <div id="edge-roi" class="tab-pane hidden">
+                        <div class="bg-novva-sand/50 p-6 rounded border border-novva-gold/20">
+                            <h4 class="text-novva-green font-bold text-lg mb-2">Supremacia Técnica</h4>
+                            <p class="text-sm text-gray-600 leading-relaxed italic">
+                                "Seus olhos em cada metro quadrado, o tempo todo. Detecte o invisível, aja antes do
+                                problema e garanta uma sanidade de lavoura inalcançável por métodos manuais."
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CTA -->
+                <div class="mt-8 pt-6 border-t border-gray-100">
+                    <a href="https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAANAAcjrueFUOFU3UjFOUVdMOUJWMTdWOUNaVjhWQzlQWC4u"
+                        target="_blank"
+                        class="block w-full text-center bg-novva-green text-white py-4 rounded-sm text-xs uppercase font-bold tracking-[0.2em] hover:bg-novva-gold transition shadow-lg">
+                        Solicitar Edge House
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- House 3: DNAi -->
+    <div id="modal-dnai"
+        class="modal fixed inset-0 z-[60] flex items-center justify-center px-4 bg-novva-black/90 backdrop-blur-md">
+        <div
+            class="modal-content bg-[#14281d] w-full max-w-4xl rounded overflow-hidden shadow-2xl relative flex flex-col md:flex-row h-[80vh] md:h-[600px] border border-novva-gold/30">
+            <button onclick="closeModal('modal-dnai')"
+                class="absolute top-4 right-4 z-20 text-white hover:text-novva-gold text-3xl transition">&times;</button>
+
+            <!-- Side Image -->
+            <div class="w-full md:w-1/3 bg-gray-900 relative h-48 md:h-auto">
+                <img src="assets/dna-lab.jpg"
+                    onerror="this.src='https://images.unsplash.com/photo-1576086213369-97a306d36557'"
+                    class="w-full h-full object-cover opacity-80">
+                <div class="absolute inset-0 bg-purple-900/30 mix-blend-overlay"></div>
+                <div class="absolute bottom-0 left-0 p-6 bg-gradient-to-t from-black to-transparent w-full">
+                    <h3 class="text-white text-2xl font-serif">DNAi-Edge</h3>
+                    <p class="text-purple-300 text-xs uppercase tracking-widest">A Revolução Biológica</p>
+                </div>
+            </div>
+
+            <!-- Content -->
+            <div class="w-full md:w-2/3 p-8 md:p-12 flex flex-col bg-[#1a3324]">
+                <!-- Tabs Nav -->
+                <div class="flex border-b border-white/10 mb-8">
+                    <button
+                        class="tab-btn active text-xs font-bold uppercase tracking-widest pb-4 border-b-2 border-novva-gold text-novva-gold mr-8 transition"
+                        onclick="switchTab(event, 'dnai-scope')">Escopo</button>
+                    <button
+                        class="tab-btn text-xs font-bold uppercase tracking-widest pb-4 border-b-2 border-transparent text-gray-400 hover:text-novva-gold mr-8 transition"
+                        onclick="switchTab(event, 'dnai-tech')">Deep Tech</button>
+                    <button
+                        class="tab-btn text-xs font-bold uppercase tracking-widest pb-4 border-b-2 border-transparent text-gray-400 hover:text-novva-gold transition"
+                        onclick="switchTab(event, 'dnai-roi')">Potencial</button>
+                </div>
+
+                <!-- Tab Panes -->
+                <div class="flex-grow overflow-y-auto pr-2 scrollbar-hide">
+                    <!-- Scope -->
+                    <div id="dnai-scope" class="tab-pane">
+                        <ul class="space-y-6">
+                            <li class="flex items-start gap-4">
+                                <div class="bg-black/20 p-2 rounded-full"><svg class="w-5 h-5 text-novva-gold"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+                                    </svg></div>
+                                <div>
+                                    <h4 class="font-bold text-white">Mapeamento Biológico Profundo</h4>
+                                    <p class="text-sm text-gray-400">Decodificação genômica completa do microbioma da
+                                        sua fazenda.</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-4">
+                                <div class="bg-black/20 p-2 rounded-full"><svg class="w-5 h-5 text-novva-gold"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                    </svg></div>
+                                <div>
+                                    <h4 class="font-bold text-white">Ecossistema Edge Integrado</h4>
+                                    <p class="text-sm text-gray-400">Todo o poder da automação robótica incluso no
+                                        pacote.</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-4">
+                                <div class="bg-black/20 p-2 rounded-full"><svg class="w-5 h-5 text-novva-gold"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                                    </svg></div>
+                                <div>
+                                    <h4 class="font-bold text-white">Consultoria Científica Dedicada</h4>
+                                    <p class="text-sm text-gray-400">Acompanhamento e interpretação exclusiva por Ph.D.s
+                                        em genética.</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- Tech -->
+                    <div id="dnai-tech" class="tab-pane hidden">
+                        <div class="space-y-6">
+                            <div>
+                                <h4 class="text-xs uppercase text-novva-gold font-bold mb-1">Tecnologia de
+                                    Sequenciamento</h4>
+                                <p class="text-white font-serif text-lg">NGS - Precisão Molecular</p>
+                            </div>
+                            <div>
+                                <h4 class="text-xs uppercase text-novva-gold font-bold mb-1">Integração de Dados</h4>
+                                <p class="text-white font-serif text-lg">Fusão Total (Bio + Aero + Solo)</p>
+                            </div>
+                            <div>
+                                <h4 class="text-xs uppercase text-novva-gold font-bold mb-1">Predição Biológica</h4>
+                                <p class="text-white font-serif text-lg">Antecipação Biológica de Cenários</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- ROI -->
+                    <div id="dnai-roi" class="tab-pane hidden">
+                        <div class="bg-[#0f1f16] p-6 rounded border border-novva-gold/30">
+                            <h4 class="text-novva-gold font-bold text-lg mb-2">O Ápice da Produtividade</h4>
+                            <p class="text-sm text-gray-300 leading-relaxed italic">
+                                "Uma nova era onde a biologia trabalha para você. Desbloqueie o potencial genético
+                                máximo do seu solo e atinja patamares de rentabilidade que redefinem o mercado."
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CTA -->
+                <div class="mt-8 pt-6 border-t border-white/10">
+                    <a href="https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAANAAcjrueFUOFU3UjFOUVdMOUJWMTdWOUNaVjhWQzlQWC4u"
+                        target="_blank"
+                        class="block w-full text-center bg-purple-900/80 border border-purple-500/50 text-white py-4 rounded-sm text-xs uppercase font-bold tracking-[0.2em] hover:bg-purple-800 transition shadow-lg shadow-purple-900/50">
+                        Solicitar DNAi-Edge
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Termos de Servico -->
+    <div id="modal-termos"
+        class="modal fixed inset-0 z-[60] flex items-center justify-center px-4 bg-novva-black/90 backdrop-blur-md">
+        <div
+            class="modal-content bg-[#14281d] w-full max-w-2xl p-10 rounded border border-novva-gold/20 relative text-gray-300 shadow-2xl">
+            <button onclick="closeModal('modal-termos')"
+                class="absolute top-4 right-4 text-novva-gold hover:text-white text-xl transition">&times;</button>
+            <h3 class="text-3xl font-serif text-white mb-6 border-b border-white/10 pb-4">Termos de Serviço</h3>
+
+            <div class="overflow-y-auto max-h-[60vh] pr-4 scrollbar-hide space-y-6 text-sm font-light leading-relaxed">
+                <!-- Welcome -->
+                <p>
+                    Bem-vindo ao nosso mundo de exploração científica e inovação! Ao embarcar nesta jornada conosco, é
+                    importante estabelecer algumas regras básicas para garantir uma colaboração harmoniosa e
+                    transparente. Por favor, reserve um momento para revisar nossos Termos de Serviço, cuidadosamente
+                    elaborados para garantir a integridade e proteção de todos os envolvidos.
+                </p>
+
+                <!-- 1 -->
+                <div>
+                    <h4 class="text-novva-gold font-bold mb-2 uppercase text-xs tracking-widest">1. Aceitação dos Termos
+                    </h4>
+                    <p>Ao utilizar nossos serviços, acessar nossas bases de dados, participar de projetos de pesquisa ou
+                        colaborar por meio de nossa plataforma, você concorda em cumprir os termos e condições aqui
+                        estabelecidos. Esses termos regem seu uso do site, das ferramentas disponibilizadas, e da
+                        interação com nossa equipe e comunidade. Se você não concordar com algum dos termos, solicitamos
+                        que não utilize nossos serviços.</p>
+                </div>
+
+                <!-- 2 -->
+                <div>
+                    <h4 class="text-novva-gold font-bold mb-2 uppercase text-xs tracking-widest">2. Nosso Compromisso
+                    </h4>
+                    <p>Nosso compromisso é fornecer um ambiente colaborativo e respeitoso, onde pesquisadores,
+                        educadores e inovadores possam explorar novas fronteiras do conhecimento. Nossas plataformas são
+                        projetadas para facilitar a pesquisa ética e de alta qualidade, promovendo a colaboração entre
+                        profissionais no Brasil e ao redor do mundo.</p>
+                </div>
+
+                <!-- 3 -->
+                <div>
+                    <h4 class="text-novva-gold font-bold mb-2 uppercase text-xs tracking-widest">3. Uso dos Serviços
+                    </h4>
+                    <p>Você pode acessar nossos serviços para: Participar de projetos de pesquisa colaborativa,
+                        contribuir com ideias originais e interagir com outros profissionais da área. No entanto, ao
+                        fazer isso, você concorda em: Respeitar os direitos de propriedade intelectual de outros
+                        colaboradores; Não utilizar nossos serviços para fins ilícitos, como fraudes, plágio ou violação
+                        de direitos de terceiros; Manter a confidencialidade de informações sensíveis e/ou proprietárias
+                        compartilhadas através da plataforma.</p>
+                </div>
+
+                <!-- 4 -->
+                <div>
+                    <h4 class="text-novva-gold font-bold mb-2 uppercase text-xs tracking-widest">4. Propriedade
+                        Intelectual</h4>
+                    <p>Todo o conteúdo fornecido por nossa equipe, incluindo, mas não se limitando a, textos, gráficos,
+                        logotipos, imagens, e materiais de pesquisa, é protegido por leis de propriedade intelectual.
+                        Você concorda em não reproduzir, distribuir ou criar trabalhos derivados de qualquer conteúdo
+                        sem autorização expressa. Caso você contribua com qualquer ideia, sugestão ou material,
+                        reconhece que detém os direitos sobre o conteúdo enviado e concede a nós uma licença limitada
+                        para utilizá-lo dentro do escopo do projeto.</p>
+                </div>
+
+                <!-- 5 -->
+                <div>
+                    <h4 class="text-novva-gold font-bold mb-2 uppercase text-xs tracking-widest">5. Privacidade e
+                        Proteção de Dados</h4>
+                    <p>Levamos sua privacidade a sério. Coletamos dados pessoais apenas quando necessário para melhorar
+                        sua experiência, facilitar a colaboração e aprimorar os serviços oferecidos. As informações
+                        pessoais fornecidas por você serão tratadas com estrita confidencialidade. Dados Coletados:
+                        Nome, e-mail, qualificações, interesses profissionais. Uso dos Dados: Facilitar a comunicação,
+                        gerenciar colaborações, oferecer atualizações. Você pode solicitar a exclusão de seus dados a
+                        qualquer momento.</p>
+                </div>
+
+                <!-- 6 -->
+                <div>
+                    <h4 class="text-novva-gold font-bold mb-2 uppercase text-xs tracking-widest">6. Anonimização e
+                        Confidencialidade</h4>
+                    <p>Quando aplicável, dados fornecidos para fins de pesquisa ou contribuição serão anonimizados para
+                        proteger sua identidade. Não compartilhamos suas informações pessoais com terceiros sem o seu
+                        consentimento, exceto quando exigido por lei.</p>
+                </div>
+
+                <!-- 7 -->
+                <div>
+                    <h4 class="text-novva-gold font-bold mb-2 uppercase text-xs tracking-widest">7. Conduta e
+                        Responsabilidade</h4>
+                    <p>Esperamos que todos os usuários de nossa plataforma mantenham um comportamento respeitoso,
+                        colaborativo e honesto. Não toleramos a divulgação de informações falsas, assédio, discriminação
+                        ou qualquer comportamento que prejudique o ambiente de trabalho em equipe. Qualquer violação
+                        desses princípios poderá resultar na suspensão ou exclusão de acesso à plataforma.</p>
+                </div>
+
+                <!-- 8 -->
+                <div>
+                    <h4 class="text-novva-gold font-bold mb-2 uppercase text-xs tracking-widest">8. Limitação de
+                        Responsabilidade</h4>
+                    <p>Embora façamos todos os esforços para garantir a precisão e qualidade de nossas ferramentas e
+                        serviços, não garantimos que as funções fornecidas estarão livres de erros ou interrupções. Você
+                        concorda em usar os serviços por sua conta e risco.</p>
+                </div>
+
+                <!-- 9 -->
+                <div>
+                    <h4 class="text-novva-gold font-bold mb-2 uppercase text-xs tracking-widest">9. Revisões dos Termos
+                    </h4>
+                    <p>Reservamo-nos o direito de modificar estes Termos de Serviço periodicamente. Recomendamos que
+                        você revise os termos regularmente para se manter atualizado.</p>
+                </div>
+
+                <!-- 10 -->
+                <div>
+                    <h4 class="text-novva-gold font-bold mb-2 uppercase text-xs tracking-widest">10. Contato e Suporte
+                    </h4>
+                    <p>Se você tiver dúvidas sobre estes Termos de Serviço, entre em contato conosco através do nosso
+                        e-mail oficial (divulgado em breve).</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script>
+        // --- Reveal Animation ---
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 100;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+        window.addEventListener("scroll", reveal);
+        reveal(); // Trigger once on load
+
+        // --- Logo Parallax / Hover Logic (Optional refinement) ---
+        // Keeps the acronym expansion smooth via CSS
+
+        // --- Modals Logic ---
+        function openModal(id) {
+            const modal = document.getElementById(id);
+            if (modal) {
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden'; // Lock scroll
+            }
+        }
+
+        function closeModal(id) {
+            const modal = document.getElementById(id);
+            if (modal) {
+                modal.classList.remove('active');
+                document.body.style.overflow = 'auto'; // Unlock scroll
+            }
+        }
+
+        // Close on click outside
+        window.onclick = function (event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        // --- Keydown 'Escape' to close ---
+        document.addEventListener('keydown', function (event) {
+            if (event.key === "Escape") {
+                const activeModals = document.querySelectorAll('.modal.active');
+                activeModals.forEach(modal => {
+                    modal.classList.remove('active');
+                    document.body.style.overflow = 'auto';
+                });
+            }
+        });
+
+        // --- Tab Logic for House Modals ---
+        function switchTab(evt, tabName) {
+            // Find the closest modal-content parent
+            var modalContent = evt.currentTarget.closest('.modal-content');
+
+            // Hide all tab panes in this modal
+            var tabPanes = modalContent.querySelectorAll(".tab-pane");
+            tabPanes.forEach(function (pane) {
+                pane.classList.add("hidden");
+            });
+
+            // Remove active class from all tab buttons in this modal
+            var tabLinks = modalContent.querySelectorAll(".tab-btn");
+            tabLinks.forEach(function (link) {
+                link.classList.remove("active", "border-novva-green", "border-novva-gold", "text-novva-green", "text-novva-gold");
+                link.classList.add("border-transparent", "text-gray-400"); // Reset to default inactive style
+            });
+
+            // Show the current tab
+            document.getElementById(tabName).classList.remove("hidden");
+
+            // Add active class to the button that opened the tab;
+            // We need to distinguish styles based on the modal type (Starter/Edge=Green, DNAi=Gold)
+            // A simple heuristic: if the button *had* a border-novva-green, keep it green.
+            // Or simpler: Just re-apply the classes that mark it as active.
+
+            // Getting the computed style or ID of the modal to verify theme?
+            // Let's just hardcode the style logic based on the parent modal ID or class?
+            // Actually, simply adding specific active classes to the element that was clicked is easiest.
+
+            evt.currentTarget.classList.remove("border-transparent", "text-gray-400");
+
+            // Check if we are in DNAi modal (Dark theme)
+            if (modalContent.parentElement.id === 'modal-dnai') {
+                evt.currentTarget.classList.add("active", "border-novva-gold", "text-novva-gold");
+            } else {
+                evt.currentTarget.classList.add("active", "border-novva-green", "text-novva-green");
+            }
+        }
+    </script>
+</body>
+
+</html>
